@@ -8,14 +8,47 @@
 </head>
 <body>
     <main>
-        <ul id="changer-list" class="list-bx"></ul>
+        <div class="tab-list">
+            <button type="button">저의</button>
+            <button type="button">이름은</button>
+            <button type="button">박승주입니다.</button>
+            <button type="button">Skrrt</button>
+            <button type="button">Skrrrrrrrrrt</button>
+            <span class="line"></span>
+        </div>
+        <!-- <ul id="changer-list" class="list-bx"></ul> -->
         <!-- S : 스크롤 모션 추가 -->
-        <section class="target">
-            <img class="sky" src="../assets/image/sky.jpg" alt="하늘">
-            <p class="txt">
-                Hello World <br>
-                스크롤 애니메이션 테스트중입니다.
-            </p>
+        <section class="section section-01">
+            <div class="container">
+                <div class="flex-bx">
+                    <div class="video-bx">
+                        <video muted playsinline preload loop class="video1">
+                            <source src="assets/video/video.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <ul class="img-list">
+                        <li>
+                            <button type="button">
+                                <img src="assets/image/sky.jpg" alt="하늘 이미지 1">
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button">
+                                <img src="assets/image/sky.jpg" alt="하늘 이미지 2">
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button">
+                                <img src="assets/image/sky.jpg" alt="하늘 이미지 3">
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <dl class="txt-bx">
+                    <dt>타이틀 영역입니다.</dt>
+                    <dd>서브타이틀 영역입니다. 서브타이틀 영역입니다. 서브타이틀 영역입니다. 서브타이틀 영역입니다. 서브타이틀 영역입니다. 서브타이틀 영역입니다. 서브타이틀 영역입니다. 서브타이틀 영역입니다. 서브타이틀 영역입니다. 서브타이틀 영역입니다.</dd>
+                </dl>
+            </div>
         </section>
         <!-- E : 스크롤 모션 추가 -->
     </main>
@@ -33,7 +66,6 @@
 
                 // 데이터 가져오기
                 const changers = e.changer;
-                console.log(e.changer)
 
                 // 데이터를 삽입할 리스트 요소 가져오기
                 const list = $('#changer-list');
@@ -60,33 +92,83 @@
         // jQuery AJAX 요청 끝
 
         gsap.registerPlugin(ScrollTrigger);
-        const target = $('.target');
-        const txt = target.children('.txt');
-        const sky = target.children('.sky');
 
+        const sec01 = $('.section-01'); /* 첫번째 타겟*/
+        const sec01VideoBx = $('.section-01 .video-bx'); /*비디오 박스*/
+        const sec01ImgList = $('.section-01 .img-list'); /*비디오 박스*/
+        const sec01Video = $('.video1'); /*비디오*/
+        const sec01Txt = $('.section-01 .txt-bx'); /*텍스트*/
+        
         const tl = gsap.timeline({
         scrollTrigger: {
-            trigger: target,
+            trigger: sec01,
             pin: true,
             scrub: 1,
             start: "top top",
-            end: "+=300%",
+            end: "+=100%",
             markers: true,
+            /*영역에 다시 들어오면 동영상 일시정지*/
+            onEnterBack: function(){
+                sec01Video[0].pause();
+            },
+            /*영역에서 벗어난 후 동영상 재생*/
+            onLeave: function(){
+                sec01Video[0].play();
+            }
         }
         });
+
         tl
-        .to(target, {
-            y: "25%",
-            duration:2, 
+        .to(sec01VideoBx, {
+            paddingRight: "352px", /*이미지 사이즈 + 간격*/
+            duration: 1, 
         })
-        .to(sky, {
-            maxWidth:"500px",
-            duration:1, 
-        })
-        .to(txt, {
+        .to(sec01ImgList, {
+            x:0,
             opacity:1,
-            duration:2, 
+            visibility: "visible",
+            duration: 0.5, 
         })
+        .to(sec01Txt, {
+            y:0,
+            opacity: 1,
+            duration: 0.5, 
+        });
+
+        let isAnimating = false;
+        const btnActiveLine = $('.tab-list .line'); /* 활성화 배경 */
+
+        // 페이지 로드 시 첫 번째 버튼으로 초기화
+        let currentButton = $('.tab-list button').first();
+        updateLinePosition();
+
+        $('.tab-list button').on('click', function () {
+            if (isAnimating) return; // 애니메이션 중일 때 클릭 방지
+
+            isAnimating = true; // 애니메이션 시작
+            btnActiveLine.addClass('animate');
+            currentButton = $(this); // 클릭된 버튼 저장
+            updateLinePosition();
+
+            // 0.5초 후 애니메이션 종료 버튼의 transition과 동일하게 맞춰주세요.
+            setTimeout(() => {
+                isAnimating = false;
+            }, 500); // 500ms
+        });
+
+        $(window).on('resize', function () {
+            updateLinePosition();
+        });
+
+        function updateLinePosition() {
+            const btnWidth = currentButton.innerWidth() + 1;
+            const btnPosition = currentButton.position();
+            currentButton.addClass('active').siblings().removeClass('active');
+            btnActiveLine.css({
+                "width": btnWidth,
+                "left": btnPosition.left
+            });
+        };
     });
 </script>
 </body>
