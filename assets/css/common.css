@@ -1,0 +1,46 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+.test {
+  width: 100%;
+  height: 100%;
+}
+
+.list-bx {
+  min-height: 100vh;
+}
+.list-bx li {
+  font-size: 14px;
+  list-style-type: circle;
+}
+.list-bx li + li {
+  margin-top: 12px;
+}
+
+.main {
+  overflow: hidden;
+}
+
+.target {
+  position: relative;
+  text-align: center;
+  margin-top: 100px;
+}
+.target .sky {
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 4/3;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: bottom;
+     object-position: bottom;
+}
+.target .txt {
+  opacity: 0;
+  margin-top: 20px;
+}

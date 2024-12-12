@@ -1,0 +1,22 @@
+{
+    "changer" : [
+        {
+            "name" : "박승주1",
+            "position": "publisher",
+            "email" : "seungjoo.park@concentrix.com",
+            "phone" : "010-1234-1111"
+        },
+        {
+            "name" : "박승주2",
+            "position": "publisher",
+            "email" : "seungjoo2.park@concentrix.com",
+            "phone" : "010-1234-2222"
+        },
+        {
+            "name" : "박승주3",
+            "position": "publisher",
+            "email" : "seungjoo3.park@concentrix.com",
+            "phone" : "010-1234-3333"
+        }
+    ]
+}

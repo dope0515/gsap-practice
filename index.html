@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/common.css?ver1.0">
+</head>
+<body>
+    <main>
+        <ul id="changer-list" class="list-bx"></ul>
+        <!-- S : 스크롤 모션 추가 -->
+        <section class="target">
+            <img class="sky" src="../assets/image/sky.jpg" alt="하늘">
+            <p class="txt">
+                Hello World <br>
+                스크롤 애니메이션 테스트중입니다.
+            </p>
+        </section>
+        <!-- E : 스크롤 모션 추가 -->
+    </main>
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/gasp.min.js"></script>
+<script src="../assets/js/ScrollTrigger.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // jQuery AJAX 요청
+        $.ajax({
+            url: '/assets/json/profile.json', // 요청을 보낼 URL
+            type: 'GET', // HTTP 메서드
+            dataType: 'json', // 서버에서 반환받을 데이터 형식
+            success: function(e) {
+
+                // 데이터 가져오기
+                const changers = e.changer;
+                console.log(e.changer)
+
+                // 데이터를 삽입할 리스트 요소 가져오기
+                const list = $('#changer-list');
+
+                // changer 배열 반복 처리
+                changers.forEach(function(changer,idx) {
+                    // 새로운 리스트 아이템 생성
+                    const listItem = `
+                        <li class="list-${idx + 1}">
+                            <strong>${changer.name}</strong> - ${changer.position} - 
+                            <a href="mailto:${changer.email}">${changer.email}</a> /
+                            <a href="tel:${changer.phone}">${changer.phone}</a>
+                        </li>
+                    `;
+
+                    // 리스트에 추가
+                    list.append(listItem);
+                });
+            },
+            error: function(xhr, status, error) {
+                alert('정상적으로 불러오지 못했습니다.');
+            },
+        });
+        // jQuery AJAX 요청 끝
+
+        gsap.registerPlugin(ScrollTrigger);
+        const target = $('.target');
+        const txt = target.children('.txt');
+        const sky = target.children('.sky');
+
+        const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: target,
+            pin: true,
+            scrub: 1,
+            start: "top top",
+            end: "+=300%",
+            markers: true,
+        }
+        });
+        tl
+        .to(target, {
+            y: "25%",
+            duration:2, 
+        })
+        .to(sky, {
+            maxWidth:"500px",
+            duration:1, 
+        })
+        .to(txt, {
+            opacity:1,
+            duration:2, 
+        })
+    });
+</script>
+</body>
+</html>
